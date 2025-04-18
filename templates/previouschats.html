@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previous Chats</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: white;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #292942;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .chat-list {
+            list-style: none;
+            padding: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .chat-item {
+            background: #444;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .chat-item:hover {
+            background: #5ab9ea;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .back-btn {
+            background: #5ab9ea;
+            color: white;
+        }
+        .back-btn:hover {
+            background: #3d8fd0;
+        }
+        .logout-btn {
+            background: #ff4b5c;
+            color: white;
+        }
+        .logout-btn:hover {
+            background: #d93a4b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Previous Chats</h2>
+        <ul class="chat-list" id="chatList">
+            <!-- Chat list items will be dynamically added here -->
+        </ul>
+        <div class="buttons">
+            <button class="back-btn" onclick="goBack()">Back to Chat</button>
+            <a href="/logout"><button class="logout-btn">Logout</button></a>
+        </div>
+    </div>
+
+    <script>
+        async function fetchPreviousChats() {
+            try {
+                const response = await fetch('/get_previous_chats');
+                const chats = await response.json();
+                const chatList = document.getElementById("chatList");
+
+                chatList.innerHTML = "";
+                if (chats.length === 0) {
+                    chatList.innerHTML = "<p>No previous chats found.</p>";
+                } else {
+                    chats.forEach(chat => {
+                        let listItem = document.createElement("li");
+                        listItem.classList.add("chat-item");
+                        listItem.textContent = `Chat ${chat.chat_id} - ${chat.timestamp}`;
+                        listItem.onclick = () => openChat(chat.chat_id);
+                        chatList.appendChild(listItem);
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching previous chats:", error);
+            }
+        }
+
+        function openChat(chatId) {
+            window.location.href = `/chat?chat_id=${chatId}`;
+        }
+
+        function goBack() {
+            window.location.href = "/chatbot";
+        }
+
+        fetchPreviousChats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1e1e2f;
+            color: rgb(42, 30, 30);
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 600px;
+            height: 80vh;
+            background: #292942;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .chat-header {
+            background: hsl(204, 20%, 95%);
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logout-btn, .new-chat-btn, .load-chats-btn {
+            background: #ff4b5c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-left: 5px;
+        }
+        .logout-btn:hover, .new-chat-btn:hover, .load-chats-btn:hover {
+            background: #d93a4b;
+        }
+        .chatbox {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            scrollbar-width: thin;
+            scrollbar-color: #c8ced2 #292942;
+        }
+        .chatbox p {
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 75%;
+        }
+        .user-message {
+            background: #5ab9ea;
+            align-self: flex-end;
+            color: white;
+        }
+        .bot-message {
+            background: #444;
+            align-self: flex-start;
+            color: white;
+        }
+        .input-container {
+            display: flex;
+            padding: 10px;
+            background: #e8e3e3;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            background: #333;
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: #5ab9ea;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background:rgb(228, 233, 238);
+        }
+        .chat-history-container {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #222;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            margin-bottom: 10px;
+        }
+        .chat-history-container ul {
+            list-style-type: none;
+        }
+        .chat-history-container li {
+            background: #444;
+            padding: 8px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .chat-history-container li:hover {
+            background:rgb(234, 236, 237);
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>AI Chatbot</span>
+            <div>
+                <button class="load-chats-btn" onclick="loadPreviousChats()">Load Previous Chats</button>
+                <button class="new-chat-btn" onclick="newChat()">New Chat</button>
+                <a href="/logout"><button class="logout-btn">Logout</button></a>
+            </div>
+        </div>
+
+        <div class="chat-history-container" id="chatHistoryContainer">
+            <ul id="chatHistoryList"></ul>
+        </div>
+
+        <div class="chatbox" id="chatbox"></div>
+
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let chatId = null;
+
+        async function newChat() {
+            try {
+                const response = await fetch('/new_chat', { method: 'POST' });
+                const data = await response.json();
+                chatId = data.chat_id;
+                document.getElementById("chatbox").innerHTML = `<p class="bot-message"><strong>Chatbot:</strong> Hello! How can I assist you?</p>`;
+            } catch (error) {
+                console.error("Error creating new chat:", error);
+            }
+        }
+
+        async function sendMessage() {
+            let userMessage = document.getElementById("userInput").value;
+            let chatbox = document.getElementById("chatbox");
+
+            if (!chatId) {
+                alert("Please start a new chat or load a previous one.");
+                return;
+            }
+
+            if (userMessage.trim() === "") return;
+
+            let userMessageElement = document.createElement("p");
+            userMessageElement.classList.add("user-message");
+            userMessageElement.innerHTML = `<strong>You:</strong> ${userMessage}`;
+            chatbox.appendChild(userMessageElement);
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            fetch('/get_response', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, message: userMessage })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let botMessageElement = document.createElement("p");
+                botMessageElement.classList.add("bot-message");
+                botMessageElement.innerHTML = `<strong>Chatbot:</strong> ${data.response}`;
+                chatbox.appendChild(botMessageElement);
+                chatbox.scrollTop = chatbox.scrollHeight;
+                document.getElementById("userInput").value = "";
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+
+        async function loadPreviousChats() {
+            try {
+                const response = await fetch('/previous_chats');
+                const data = await response.json();
+                let chatHistoryContainer = document.getElementById("chatHistoryContainer");
+                let chatHistoryList = document.getElementById("chatHistoryList");
+                chatHistoryList.innerHTML = "";
+
+                data.chats.forEach(chat => {
+                    let listItem = document.createElement("li");
+                    listItem.textContent = `Chat ${chat.chat_id}`;
+                    listItem.onclick = () => loadChatHistory(chat.chat_id);
+                    chatHistoryList.appendChild(listItem);
+                });
+
+                chatHistoryContainer.style.display = "block";
+            } catch (error) {
+                console.error("Error loading previous chats:", error);
+            }
+        }
+
+        async function loadChatHistory(selectedChatId) {
+            try {
+                const response = await fetch(`/get_chat_history?chat_id=${selectedChatId}`);
+                const data = await response.json();
+                chatId = selectedChatId;
+                let chatbox = document.getElementById("chatbox");
+                chatbox.innerHTML = "";
+
+                data.history.forEach(entry => {
+                    let messageElement = document.createElement("p");
+                    messageElement.classList.add(entry.sender === "user" ? "user-message" : "bot-message");
+                    messageElement.innerHTML = `<strong>${entry.sender === "user" ? "You" : "Chatbot"}:</strong> ${entry.message}`;
+                    chatbox.appendChild(messageElement);
+                });
+
+                document.getElementById("chatHistoryContainer").style.display = "none";
+            } catch (error) {
+                console.error("Error loading chat history:", error);
+            }
+        }
+    </script>
+</body>
+</html>
