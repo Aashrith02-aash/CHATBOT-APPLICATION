@@ -1,0 +1,88 @@
+************************************* Invoked: Tue Mar 25 01:28:10 2025
+[0] Arguments: C:\Users\vudat\Downloads\gpt4all-installer-win64.exe
+[17] Operations sanity check succeeded.
+[34] Using metadata cache from "C:/Users/vudat/AppData/Local/cache\\qt-installer-framework\\9c11e018-d3aa-3c3a-9118-829c9ab85b1c"
+[34] Found 1 cached items.
+[35] Language: en-US
+[534] Loaded control script ":/metadata/installer-config/installer_control_qs.qs"
+[534] Using control script: ":/metadata/installer-config/installer_control_qs.qs"
+[5585] Fetching latest update information...
+[5597] Downloading 1 items to cache.
+[5597] Retrieving information from remote repositories...
+[6339] Loading component scripts...
+[16733] OverwriteTargetDirectory : Warning : You have selected an existing, non-empty directory for installation.
+Note that it will be completely wiped on uninstallation of this application.
+It is not advisable to install into this directory as installation might fail.
+Do you want to continue? Yes|No
+[30224] Loading component scripts...
+[39744] Selected components without dependencies:
+gpt4all
+[39745] Installation space required: "2.02 GB" Temporary space required: "933.97 MB" Local repository size: "0.00 bytes"
+[39751] Cache and install directories are on the same volume. Volume mount point: "C:\\" Free space available: "11.76 GB"
+[41109] backup  operation: Mkdir
+[41109] 	- arguments: C:/Users/vudat/CHATBOT
+[41110] Done
+[41111] perform  operation: Mkdir
+[41111] 	- arguments: C:/Users/vudat/CHATBOT
+[41111] Done
+[41113] Preparing the installation...
+[41113] Install size: 1 components
+[41116] Downloading packages...
+[41117] Downloading archive "3.10.0bin.7z.sha1" for component gpt4all.
+[41685] Downloading archive "3.10.0bin.7z" for component gpt4all.
+[45680] Downloading archive "3.10.0lib.7z.sha1" for component gpt4all.
+[46297] Downloading archive "3.10.0lib.7z" for component gpt4all.
+[81820] Downloading archive "3.10.0resources.7z.sha1" for component gpt4all.
+[82501] Downloading archive "3.10.0resources.7z" for component gpt4all.
+[98274] Downloading archive "3.10.0content.7z.sha1" for component gpt4all.
+[98813] Downloading archive "3.10.0content.7z" for component gpt4all.
+[99249] Preparing to unpack components...
+[99264] backup gpt4all concurrent operation: Extract
+[99264] 	- arguments: installer://gpt4all/3.10.0bin.7z, C:/Users/vudat/CHATBOT
+[99264] Started
+[99264] backup gpt4all concurrent operation: Extract
+[99264] 	- arguments: installer://gpt4all/3.10.0content.7z, C:/Users/vudat/CHATBOT
+[99264] Started
+[99264] backup gpt4all concurrent operation: Extract
+[99265] 	- arguments: installer://gpt4all/3.10.0resources.7z, C:/Users/vudat/CHATBOT
+[99265] Started
+[99265] backup gpt4all concurrent operation: Extract
+[99265] 	- arguments: installer://gpt4all/3.10.0lib.7z, C:/Users/vudat/CHATBOT
+[99265] Started
+[99444] Unpacking components...
+[99445] perform gpt4all concurrent operation: Extract
+[99445] 	- arguments: installer://gpt4all/3.10.0lib.7z, C:/Users/vudat/CHATBOT
+[99445] Started
+[99445] perform gpt4all concurrent operation: Extract
+[99445] 	- arguments: installer://gpt4all/3.10.0resources.7z, C:/Users/vudat/CHATBOT
+[99445] Started
+[99445] perform gpt4all concurrent operation: Extract
+[99445] 	- arguments: installer://gpt4all/3.10.0bin.7z, C:/Users/vudat/CHATBOT
+[99445] Started
+[99445] perform gpt4all concurrent operation: Extract
+[99445] 	- arguments: installer://gpt4all/3.10.0content.7z, C:/Users/vudat/CHATBOT
+[99445] Started
+[157122] Installing component gpt4all
+[157125] backup gpt4all operation: CreateShortcut
+[157125] 	- arguments: C:/Users/vudat/CHATBOT/bin/chat.exe, C:\Users\vudat/Desktop/GPT4All.lnk, workingDirectory=C:/Users/vudat/CHATBOT/bin, iconPath=C:/Users/vudat/CHATBOT/gpt4all.ico, iconId=0, description=Open GPT4All
+[157126] Done
+[157126] perform gpt4all operation: CreateShortcut
+[157126] 	- arguments: C:/Users/vudat/CHATBOT/bin/chat.exe, C:\Users\vudat/Desktop/GPT4All.lnk
+[157504] Done
+[157504] backup gpt4all operation: CreateShortcut
+[157504] 	- arguments: C:/Users/vudat/CHATBOT/bin/chat.exe, C:\Users\vudat\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\GPT4All/GPT4All.lnk, workingDirectory=C:/Users/vudat/CHATBOT/bin, iconPath=C:/Users/vudat/CHATBOT/gpt4all.ico, iconId=0, description=Open GPT4All
+[157505] Done
+[157505] perform gpt4all operation: CreateShortcut
+[157505] 	- arguments: C:/Users/vudat/CHATBOT/bin/chat.exe, C:\Users\vudat\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\GPT4All/GPT4All.lnk
+[157575] Done
+[157576] backup gpt4all operation: License
+[157576] 	- arguments:
+[157576] Done
+[157576] perform gpt4all operation: License
+[157576] 	- arguments:
+[157580] Done
+[157605] Writing maintenance tool: "C:/Users/vudat/CHATBOT/maintenancetool.exe.new"
+[157606] Writing maintenance tool.
+[158182] Wrote permissions for maintenance tool.
+[158534] Maintenance tool hard restart: false.
+[158543] Installation finished!
